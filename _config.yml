@@ -1,7 +1,7 @@
 title: AArch64 Laptops
 author: 💻 with 🩶
 description: >- # this YAML syntax means to ignore newlines until "baseurl:"
-  Providing the GNU/Linux community with resources Arm laptops since
+  Providing the GNU/Linux community with resources for Arm laptops since
   2019!
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
