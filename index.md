@@ -5,7 +5,8 @@ layout: page
 # Introducing the laptops
 
 * Lenovo Yoga C630 WoS: 😭 ❓
-* [Thinkpad X13s: 😭 🐧](laptops/thinkpad_x13s.md)
+* [Thinkpad X13s: 🐧 🔗](laptops/thinkpad_x13s.md)
+
 
 Key:
 
