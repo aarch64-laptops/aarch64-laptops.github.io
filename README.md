@@ -1,13 +1,32 @@
-Welcome to AArch64 laptops!
+## Welcome to AArch64 laptops!
+
+This website is written in Markdown and can be edited offline using git or
+online using the github web interface.
+
+The canonical location for the fully rendered website is:
+[https://aarch64-laptops.github.io](https://aarch64-laptops.github.io).
 
 
-This repo contains our website. Visit https://aarch64-laptops.github.io
-to find out more.
+## Contributing to this repo
 
-# Contributing to this repo
+If you are logged into github then you can edit the website by visiting
+the non-rendered version of the homepage (the edit button is in the
+top-right):
+[https://github.com/aarch64-laptops/aarch64-laptops.github.io/blob/main/index.md](https://github.com/aarch64-laptops/aarch64-laptops.github.io/blob/main/index.md)
 
-TODO
+You can also use your normal git tooling to edit the website offline.
+Try:
 
-# License
+```
+git clone https://github.com/aarch64-laptops/aarch64-laptops.github.io
+cd aarch64-laptops.github.io
+gem install bundler jekyll
+bundle exec jekyll serve
+```
 
-TODO
+## Copyright and licensing
+
+The AArch64 Laptops website is copyrighted by our contributors (see our
+[git repo
+history](https://github.com/aarch64-laptops/aarch64-laptops.github.io/commits/main)
+for details) and is licensed under [CC BY-SA 4.0](LICENSE.html).
