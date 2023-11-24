@@ -1,4 +1,10 @@
-Welcome to AArch64 laptops.
+---
+layout: page
+title: About
+---
+
+Welcome to AArch64 laptops!
+
 
 This repo contains our website. Visit https://aarch64-laptops.github.io
 to find out more.

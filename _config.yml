@@ -1,8 +1,8 @@
 title: AArch64 Laptops
 author: 💻 with 🩶
 description: >- # this YAML syntax means to ignore newlines until "baseurl:"
-  Providing community resources for running GNU/Linux on AArch64
-  laptops since 2019!
+  Providing the GNU/Linux community with resources Arm laptops since
+  2019!
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  aarch64-laptops
@@ -11,3 +11,12 @@ github_username:  aarch64-laptops
 theme: minima
 plugins:
     - jekyll-relative-links
+    - jekyll-titles-from-headings
+
+header_pages:
+  - README.md
+
+titles_from_headings:
+  enabled:     true
+  strip_title: true
+  collections: false

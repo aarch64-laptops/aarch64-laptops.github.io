@@ -29,4 +29,4 @@ Key:
 # Contributing to this repo
 
 See the contributors guide at:
-[https://github.com/aarch64-laptops/aarch64-laptops.github.io/README.md](https://github.com/aarch64-laptops/aarch64-laptops.github.io/README.md).
+[https://github.com/aarch64-laptops/.../README.md](https://github.com/aarch64-laptops/aarch64-laptops.github.io/blob/main/README.md)
