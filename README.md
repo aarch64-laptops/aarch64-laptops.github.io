@@ -1,8 +1,3 @@
----
-layout: page
-title: About
----
-
 Welcome to AArch64 laptops!
 
 

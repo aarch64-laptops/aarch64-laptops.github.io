@@ -14,7 +14,7 @@ plugins:
     - jekyll-titles-from-headings
 
 header_pages:
-  - README.md
+  - about.md
 
 titles_from_headings:
   enabled:     true
