@@ -1,5 +1,11 @@
 ---
 layout: page
+# This is slightly nasty hack to fixup the link to LICENSE.md from
+# README.md (when it is included in about.md). This allows the link
+# to work in both the fully-rendered and github-rendered versions
+# of the site.
+redirect_from:
+  - /LICENSE.md/
 ---
 
 # Creative Commons Attribution-ShareAlike 4.0 International

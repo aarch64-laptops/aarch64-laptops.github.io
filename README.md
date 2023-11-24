@@ -29,4 +29,4 @@ bundle exec jekyll serve
 The AArch64 Laptops website is copyrighted by our contributors (see our
 [git repo
 history](https://github.com/aarch64-laptops/aarch64-laptops.github.io/commits/main)
-for details) and is licensed under [CC BY-SA 4.0](LICENSE.html).
+for details) and is licensed under [CC BY-SA 4.0](LICENSE.md).
