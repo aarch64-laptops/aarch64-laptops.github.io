@@ -3,12 +3,8 @@ title: Thinkpad X13s
 layout: page
 ---
 
-<!--
 ## Step-by-step install guides
-
-Note: Don't forget to update the status-word in index.md when editing
-this.
--->
+- [Debian](debian_guide.md)
 
 ## Distro-specific information
 
