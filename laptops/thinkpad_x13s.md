@@ -19,4 +19,4 @@ this.
 
 ## Upstream kernel status
 
-See [https://github.com/jhovold/linux/wiki/X13s]()
+See <https://github.com/jhovold/linux/wiki/X13s>
