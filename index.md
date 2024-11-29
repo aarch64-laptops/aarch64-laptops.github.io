@@ -5,6 +5,7 @@ layout: page
 # Introducing the laptops
 
 * Lenovo Yoga C630 WoS: 😭 ❓
+* HP Elite Folio: 😭 ❓
 * [Thinkpad X13s: 🐧📗 🔗](laptops/thinkpad_x13s/thinkpad_x13s.md)
 
 
