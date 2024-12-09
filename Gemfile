@@ -12,7 +12,7 @@ source "https://rubygems.org"
 gem "minima", "~> 2.5"
 
 # Pick up all the gems available to GitHub pages
-gem "github-pages", group: :jekyll_plugins
+gem "github-pages", "~> 229", group: :jekyll_plugins
 
 # If you have any plugins, put them here!
 group :jekyll_plugins do
