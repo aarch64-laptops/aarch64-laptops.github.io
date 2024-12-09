@@ -4,3 +4,8 @@ _site
 .jekyll-metadata
 .*.swp
 vendor
+.bundle
+_laptop.template
+_includes/full_*
+_includes/index_*
+_includes/layout_*

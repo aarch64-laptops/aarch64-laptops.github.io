@@ -1,0 +1,44 @@
+tr {
+	&:nth-child(even) {
+		td.status-Y {
+			background-color: rgb(0,160,0);
+		}
+		td.status-N {
+			background-color: rgb(255,30,30);
+		}
+		td.status-NA {
+			background-color: darkgray;
+		}
+		td.status-unknown {
+			background-color: lightgray;
+		}
+	}
+
+	td.status-Y {
+		background-color: green;
+		text-align: center;
+	}
+	td.status-branch {
+		background-color: lightgreen;
+		text-align: center;
+	}
+	td.status-N {
+		background-color: red;
+		text-align: center;
+	}
+	td.status-NA {
+		background-color: gray;
+		text-align: center;
+	}
+	td.status-next {
+		background-color: yellow;
+		text-align: center;
+	}
+	td.status-unknown {
+		background-color: silver;
+		text-align: center;
+	}
+	td {
+		text-align: left;
+	}
+}
