@@ -1,0 +1,35 @@
+tr {
+	&:nth-child(even) {
+		td.status-Y {
+			background-color: rgb(0,160,0);
+		}
+		td.status-N {
+			background-color: rgb(255,30,30);
+		}
+		td.status-NA {
+			background-color: darkgray;
+		}
+		td.status-unknown {
+			background-color: lightgray;
+		}
+	}
+
+	td.status-Y {
+		background-color: green;
+	}
+	td.status-no-dts {
+		background-color: lightgreen;
+	}
+	td.status-N {
+		background-color: red;
+	}
+	td.status-NA {
+		background-color: gray;
+	}
+	td.status-next {
+		background-color: yellow;
+	}
+	td.status-unknown {
+		background-color: silver;
+	}
+}
