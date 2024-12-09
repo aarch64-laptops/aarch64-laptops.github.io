@@ -1,0 +1,23 @@
+<td class="
+{%- case include.status -%}
+  {%- when "N", "no", false -%}
+    status-N
+  {%- when "pending", "WIP", "wip" -%}
+    status-next
+  {%- when "N/A", "n/a" -%}
+    status-NA
+  {%- when nil -%}
+    status-unknown
+  {%- else -%}
+    {%- if include.status contains "next" or include.status contains "Next" -%}
+      status-next
+    {%- elsif include.status contains "branch" or include.status contains "Branch" -%}
+      status-branch
+    {%- else -%}
+      status-Y
+    {%- endif -%}
+{%- endcase -%}">{{include.status}}
+{%- if include.comment %}
+	<span class="tooltip">(*)<span class="tooltiptext">{{include.comment}}</span></span>
+{%- endif -%}
+</td>
