@@ -1,29 +1,29 @@
 ---
-layout: page
+layout: home
 ---
+<div>
+<h2>Device status</h2>
+<p>This table contains highlights of the features supported for each Device.</p>
+<p>Click on the Device link to see the full list.</p>
+<table>
+<thead>
+{% include index_laptop_header.liquid %}
+</thead>
+<tbody>
+{% for d in site.laptop %}
+<tr>
+<td><a href="{{d.url | absolute_url}}">{{d.name}}</a></td>
+{% include index_laptop_status.liquid %}
+<td><a href="{{d.url | absolute_url}}">{{d.name}}</a></td>
+</tr>
+{% endfor %}
+</tbody>
+<tfoot>
+{% include index_laptop_header.liquid %}
+</tfoot>
+</table>
+</div>
 
-# Introducing the laptops
-
-* Lenovo Yoga C630 WoS: 😭 ❓
-* [Thinkpad X13s: 🐧📗 🔗](laptops/thinkpad_x13s/thinkpad_x13s.md)
-
-
-Key:
-
-😭 : This is an interesting laptop but no documentation currently exists in this repo (pull requests are very welcome)
-
-🐧 : Upstream Linux kernel supports fundamental hardware features. Different
-     developers will have different opinions about what hardware is (and is
-     not) fundamental. On this page fundamental means support for at least:
-     keyboard, trackpad, display, WiFi, built-in storage. More informally
-     this hardware translates to "might be able to do useful work in a coffee
-     shop".
-
-📗 : Includes a detailed and beginner friendly step-by-step install guide
-
-🔗 : Has links to distro specific guides and/or additional community resources.
-
-# Contributing to this repo
-
-See the contributors guide at:
-[https://github.com/aarch64-laptops/.../README.md](https://github.com/aarch64-laptops/aarch64-laptops.github.io/blob/main/README.md)
+<p> Contribute to this page, see the contributors guide on <a
+href="https://github.com/aarch64-laptops/aarch64-laptops.github.io/blob/main/README.md">
+aarch64-laptops Github</a>.</p>
