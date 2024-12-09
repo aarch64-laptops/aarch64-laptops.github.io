@@ -20,6 +20,7 @@ Try:
 ```
 git clone https://github.com/aarch64-laptops/aarch64-laptops.github.io
 cd aarch64-laptops.github.io
+./regen.py
 gem install bundler jekyll
 bundle exec jekyll serve
 ```
