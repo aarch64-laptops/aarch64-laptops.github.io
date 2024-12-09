@@ -13,6 +13,17 @@ plugins:
   - jekyll-redirect-from
   - jekyll-relative-links
   - jekyll-titles-from-headings
+  - jekyll-feed
+  - jekyll-include-cache
+
+feed:
+  collections:
+    - laptop
+
+collections:
+  laptop:
+    output: true
+    permalink: /:collection/:name
 
 header_pages:
   - about.md
@@ -20,4 +31,6 @@ header_pages:
 titles_from_headings:
   enabled:     true
   strip_title: true
-  collections: false
+
+exclude:
+   - laptop.yaml

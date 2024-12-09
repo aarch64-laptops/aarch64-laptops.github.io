@@ -1,0 +1,136 @@
+# Don't forget to execute ./regen.py after changing this file.
+
+audio:
+  name: Audio
+  intop: True
+  items:
+    displayportaudio:
+      name: DisplayPort
+      intop: True
+    mic:
+      name: Mic
+      intop: True
+    speakers:
+      name: Speakers
+      intop: True
+camera:
+  name: Camera
+  intop: True
+connectivity:
+  name: Connectivity
+  intop: True
+  items:
+    bluetooth:
+      name: Bluetooth
+      intop: True
+    wifi:
+      name: Wifi
+      intop: True
+    modem:
+      name: Modem
+      intop: True
+cpufreq:
+  name: CPUfreq
+  intop: True
+efivariables:
+   name: EFI variables
+   intop: True
+hid:
+  name: HID
+  intop: True
+  items:
+    backlight:
+      name: Backlight
+      intop: True
+    keyboard:
+      name: Keyboard
+      intop: True
+    specialkeys:
+      name: Special Keys
+      intop: True
+    touchpad:
+      name: Touchpad
+      intop: True
+    touchscreen:
+      name: Touchscreen
+      intop: True
+    fingerprintreader:
+      name: Fingerprint reader
+      intop: True
+pcie:
+   name: PCIe
+   intop: True
+power:
+  name: Power
+  intop: True
+  items:
+    battery:
+      name: Battery
+      intop: True
+    hibernation:
+      name: Hibernation
+      intop: True
+    suspend:
+      name: Suspend
+      intop: True
+remoteproc:
+   name: Remoteproc
+   intop: True
+rtc:
+   name: RTC
+   intop: True
+storage:
+  name: Storage
+  intop: True
+  items:
+    nvmessd:
+      name: NVMe SSD
+      intop: True
+    ufs:
+      name: UFS
+      intop: True
+thermalsensors:
+   name: Thermal sensors
+   intop: True
+tpm:
+   name: TPM
+   intop: True
+usb:
+  name: USB
+  intop: True
+  items:
+    usba:
+      name: USBA
+      intop: True
+    usbc:
+      name: USBC
+      intop: True
+    usbcdpaltmode:
+      name: USBC Display Alt Mode
+      intop: True
+    usbpd:
+      name: USBPD
+      intop: True
+video:
+  name: Video
+  intop: True
+  items:
+    display:
+      name: Display
+      intop: True
+    hdmi:
+      name: HDMI
+      intop: True
+    gpu:
+      name: GPU
+      intop: True
+    videoacceleration:
+      name: Video Acceleration
+      intop: True
+virtualisation:
+   name: Virtualisation
+   intop: True
+watchdog:
+   name: Watchdog
+   intop: True
+
