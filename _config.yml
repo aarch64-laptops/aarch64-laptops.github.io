@@ -33,4 +33,5 @@ titles_from_headings:
   strip_title: true
 
 exclude:
+   - vendor/
    - laptop.yaml
