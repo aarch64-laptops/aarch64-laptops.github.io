@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.4">Jekyll</generator><link href="/pr-preview/pr-4/feed/laptop.xml" rel="self" type="application/atom+xml" /><link href="/pr-preview/pr-4/" rel="alternate" type="text/html" /><updated>2024-12-17T16:33:01+00:00</updated><id>/pr-preview/pr-4/feed/laptop.xml</id><title type="html">AArch64 Laptops | Laptop</title><subtitle>Providing the GNU/Linux community with resources for Arm laptops since 2019!</subtitle><author><name>💻 with 🩶</name></author><entry><title type="html">Thinkpad_x13s</title><link href="/pr-preview/pr-4/laptop/thinkpad-x13s" rel="alternate" type="text/html" title="Thinkpad_x13s" /><published>2024-12-17T16:33:01+00:00</published><updated>2024-12-17T16:33:01+00:00</updated><id>/pr-preview/pr-4/laptop/thinkpad_x13s</id><content type="html" xml:base="/pr-preview/pr-4/laptop/thinkpad-x13s"><![CDATA[<h2 id="step-by-step-install-guides">Step-by-step install guides</h2>
+<ul>
+  <li><a href="../laptops/thinkpad_x13s/debian_guide.html">Debian</a></li>
+</ul>
+
+<h2 id="distro-specific-information">Distro-specific information</h2>
+
+<ul>
+  <li><a href="https://github.com/ironrobin/archiso-x13s/wiki/Feature-Support">Arch Linux ARM</a></li>
+  <li><a href="https://wiki.debian.org/InstallingDebianOn/Thinkpad/X13s">Debian</a></li>
+  <li><a href="https://wiki.gentoo.org/wiki/ThinkPad_X13s">Gentoo</a></li>
+  <li><a href="https://launchpad.net/~ubuntu-concept/+archive/ubuntu/x13s">Ubuntu</a></li>
+</ul>
+
+<h2 id="work-in-progress-branches">Work-in-progress branches</h2>
+
+<p>Important fixes and support for new features (once stable enough) can be found
+in my X13s (sc8280xp) wip branches, for example:</p>
+
+<p>https://github.com/jhovold/linux/tree/wip/sc8280xp-6.13-rc1</p>
+
+<p>These branches also include a minimal (but functional) johan_defconfig that
+serves as documentation for the configuration options that need to be enabled
+for the X13s.</p>
+
+<h2 id="kernel-command-line">Kernel command line</h2>
+<p>To boot Linux the following kernel parameters need to be provided:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>clk_ignore_unused pd_ignore_unused arm64.nopauth efi=noruntime
+</code></pre></div></div>
+<p>due to a generic resource handover issue and a couple of firmware bugs, respectively.</p>
+
+<p>With recent UEFI firmware <code class="language-plaintext highlighter-rouge">efi=noruntime</code> can be left out when the <code class="language-plaintext highlighter-rouge">Linux Boot</code> option is enabled.</p>
+
+<h2 id="userspace-dependencies">Userspace dependencies</h2>
+<ul>
+  <li>alsa-ucm-conf 1.2.11</li>
+  <li>libcamera 0.3.0</li>
+  <li>linux-firmware-20230919
+    <ul>
+      <li>Bluetooth NVM config (hpnv21.b8c and hpnv21g.b8c) from latest <a href="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/qca">linux-firmware</a></li>
+      <li>Video acceleration firmware (qcvss8280.mbn) with wip branch</li>
+    </ul>
+  </li>
+  <li>Mesa 23.1.4</li>
+  <li>ModemManager 1.20 + <a href="https://modemmanager.org/docs/modemmanager/fcc-unlock/">fcc-unlock</a> symlink</li>
+  <li>~Qualcomm protection-domain mapper daemon (<a href="https://github.com/andersson/pd-mapper">pd-mapper</a>)~ (not needed since 6.11)</li>
+</ul>
+
+<h2 id="information-collected-and-more-information">Information collected and more information</h2>
+
+<p>See <a href="https://github.com/jhovold/linux/wiki/X13s">https://github.com/jhovold/linux/wiki/X13s</a></p>]]></content><author><name>💻 with 🩶</name></author><summary type="html"><![CDATA[Step-by-step install guides Debian]]></summary></entry><entry><title type="html">Thinkpad_t14s</title><link href="/pr-preview/pr-4/laptop/thinkpad-t14s" rel="alternate" type="text/html" title="Thinkpad_t14s" /><published>2024-12-17T16:33:01+00:00</published><updated>2024-12-17T16:33:01+00:00</updated><id>/pr-preview/pr-4/laptop/thinkpad_t14s</id><content type="html" xml:base="/pr-preview/pr-4/laptop/thinkpad-t14s"><![CDATA[<h2 id="kernel-command-line">Kernel command line</h2>
+<p>To boot Linux the following kernel parameters need to be provided:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>clk_ignore_unused pd_ignore_unused
+</code></pre></div></div>
+<p>due to a generic resource handover issue.</p>
+
+<h2 id="userspace-dependencies">Userspace dependencies</h2>
+<ul>
+  <li>linux-firmware-20241017</li>
+  <li>Mesa 24.2</li>
+  <li>Windows firmware (in <code class="language-plaintext highlighter-rouge">/lib/firmware/qcom/x1e80100/LENOVO/21N1/</code>)
+    <ul>
+      <li>adsp_dtbs.elf</li>
+      <li>cdsp_dtbs.elf</li>
+      <li>qcadsp8380.mbn</li>
+      <li>qccdsp8380.mbn</li>
+      <li>qcdxkmsuc8380.mbn</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="uefi-firmware">UEFI firmware</h2>
+<ul>
+  <li>Boot issues with 64 GB version (disable upper 32 GB as workaround)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">cutmem 0x8800000000 0x8fffffffff</code></li>
+    </ul>
+  </li>
+  <li>GRUB fails to start on 64 GB version (<a href="https://git.launchpad.net/~ubuntu-concept/ubuntu/+source/grub2/commit/?id=185e4420f7010c3cdd48ef2274a77f1a4e5e78c1">patch</a> GRUB as workaround)</li>
+  <li>Firmware bugs can prevent GRUB and systemd-boot from starting kernel (start and exit UEFI shell as workaround)(fixed in wip branch)</li>
+</ul>
+
+<h2 id="information-collected-and-more-information">Information collected and more information</h2>
+
+<p>See <a href="https://github.com/jhovold/linux/wiki/T14s">https://github.com/jhovold/linux/wiki/T14s</a></p>]]></content><author><name>💻 with 🩶</name></author><summary type="html"><![CDATA[Kernel command line To boot Linux the following kernel parameters need to be provided: clk_ignore_unused pd_ignore_unused due to a generic resource handover issue.]]></summary></entry><entry><title type="html">Dell_xps13_9345</title><link href="/pr-preview/pr-4/laptop/dell-xps13-9345" rel="alternate" type="text/html" title="Dell_xps13_9345" /><published>2024-12-17T16:33:01+00:00</published><updated>2024-12-17T16:33:01+00:00</updated><id>/pr-preview/pr-4/laptop/dell_xps13_9345</id><content type="html" xml:base="/pr-preview/pr-4/laptop/dell-xps13-9345"><![CDATA[<h2 id="kernel-command-line">Kernel command line</h2>
+<p>To boot Linux the following kernel parameters need to be provided:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>clk_ignore_unused pd_ignore_unused
+</code></pre></div></div>
+<p>due to a generic resource handover issue.</p>
+
+<h2 id="userspace-dependencies">Userspace dependencies</h2>
+<ul>
+  <li>linux-firmware-20241017</li>
+  <li>Mesa 24.2</li>
+  <li>Windows firmware (in <code class="language-plaintext highlighter-rouge">/lib/firmware/qcom/x1e80100/dell/xps13-9345</code>)
+    <ul>
+      <li>adsp_dtbs.elf</li>
+      <li>adspr.jsn</li>
+      <li>adsps.jsn</li>
+      <li>adspua.jsn</li>
+      <li>battmgr.jsn</li>
+      <li>cdsp_dtbs.elf</li>
+      <li>qcadsp8380.mbn</li>
+      <li>qccdsp8380.mbn</li>
+      <li>qcdxkmsuc8380.mbn</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="uefi-firmware">UEFI firmware</h2>
+<ul>
+  <li>Boot issues with 64 GB version (disable upper 32 GB as workaround)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">cutmem 0x8800000000 0x8fffffffff</code></li>
+    </ul>
+  </li>
+  <li>GRUB fails to start on 64 GB version (<a href="https://git.launchpad.net/~ubuntu-concept/ubuntu/+source/grub2/commit/?id=185e4420f7010c3cdd48ef2274a77f1a4e5e78c1">patch</a> GRUB as workaround)</li>
+</ul>]]></content><author><name>💻 with 🩶</name></author><summary type="html"><![CDATA[Kernel command line To boot Linux the following kernel parameters need to be provided: clk_ignore_unused pd_ignore_unused due to a generic resource handover issue.]]></summary></entry></feed>
