@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.4">Jekyll</generator><link href="/feed/laptop.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2024-12-11T11:04:38+00:00</updated><id>/feed/laptop.xml</id><title type="html">AArch64 Laptops | Laptop</title><subtitle>Providing the GNU/Linux community with resources for Arm laptops since 2019!</subtitle><author><name>💻 with 🩶</name></author><entry><title type="html">Thinkpad_x13s</title><link href="/laptop/thinkpad-x13s" rel="alternate" type="text/html" title="Thinkpad_x13s" /><published>2024-12-11T11:04:38+00:00</published><updated>2024-12-11T11:04:38+00:00</updated><id>/laptop/thinkpad_x13s</id><content type="html" xml:base="/laptop/thinkpad-x13s"><![CDATA[<h2 id="step-by-step-install-guides">Step-by-step install guides</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.4">Jekyll</generator><link href="/feed/laptop.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2024-12-18T08:34:21+00:00</updated><id>/feed/laptop.xml</id><title type="html">AArch64 Laptops | Laptop</title><subtitle>Providing the GNU/Linux community with resources for Arm laptops since 2019!</subtitle><author><name>💻 with 🩶</name></author><entry><title type="html">Thinkpad_x13s</title><link href="/laptop/thinkpad-x13s" rel="alternate" type="text/html" title="Thinkpad_x13s" /><published>2024-12-18T08:34:21+00:00</published><updated>2024-12-18T08:34:21+00:00</updated><id>/laptop/thinkpad_x13s</id><content type="html" xml:base="/laptop/thinkpad-x13s"><![CDATA[<h2 id="step-by-step-install-guides">Step-by-step install guides</h2>
 <ul>
   <li><a href="../laptops/thinkpad_x13s/debian_guide.html">Debian</a></li>
 </ul>
@@ -48,7 +48,7 @@ for the X13s.</p>
 
 <h2 id="information-collected-and-more-information">Information collected and more information</h2>
 
-<p>See <a href="https://github.com/jhovold/linux/wiki/X13s">https://github.com/jhovold/linux/wiki/X13s</a></p>]]></content><author><name>💻 with 🩶</name></author><summary type="html"><![CDATA[Step-by-step install guides Debian]]></summary></entry><entry><title type="html">Thinkpad_t14s</title><link href="/laptop/thinkpad-t14s" rel="alternate" type="text/html" title="Thinkpad_t14s" /><published>2024-12-11T11:04:38+00:00</published><updated>2024-12-11T11:04:38+00:00</updated><id>/laptop/thinkpad_t14s</id><content type="html" xml:base="/laptop/thinkpad-t14s"><![CDATA[<h2 id="kernel-command-line">Kernel command line</h2>
+<p>See <a href="https://github.com/jhovold/linux/wiki/X13s">https://github.com/jhovold/linux/wiki/X13s</a></p>]]></content><author><name>💻 with 🩶</name></author><summary type="html"><![CDATA[Step-by-step install guides Debian]]></summary></entry><entry><title type="html">Thinkpad_t14s</title><link href="/laptop/thinkpad-t14s" rel="alternate" type="text/html" title="Thinkpad_t14s" /><published>2024-12-18T08:34:21+00:00</published><updated>2024-12-18T08:34:21+00:00</updated><id>/laptop/thinkpad_t14s</id><content type="html" xml:base="/laptop/thinkpad-t14s"><![CDATA[<h2 id="kernel-command-line">Kernel command line</h2>
 <p>To boot Linux the following kernel parameters need to be provided:</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>clk_ignore_unused pd_ignore_unused
 </code></pre></div></div>
@@ -82,4 +82,37 @@ for the X13s.</p>
 
 <h2 id="information-collected-and-more-information">Information collected and more information</h2>
 
-<p>See <a href="https://github.com/jhovold/linux/wiki/T14s">https://github.com/jhovold/linux/wiki/T14s</a></p>]]></content><author><name>💻 with 🩶</name></author><summary type="html"><![CDATA[Kernel command line To boot Linux the following kernel parameters need to be provided: clk_ignore_unused pd_ignore_unused due to a generic resource handover issue.]]></summary></entry></feed>
+<p>See <a href="https://github.com/jhovold/linux/wiki/T14s">https://github.com/jhovold/linux/wiki/T14s</a></p>]]></content><author><name>💻 with 🩶</name></author><summary type="html"><![CDATA[Kernel command line To boot Linux the following kernel parameters need to be provided: clk_ignore_unused pd_ignore_unused due to a generic resource handover issue.]]></summary></entry><entry><title type="html">Dell_xps13_9345</title><link href="/laptop/dell-xps13-9345" rel="alternate" type="text/html" title="Dell_xps13_9345" /><published>2024-12-18T08:34:21+00:00</published><updated>2024-12-18T08:34:21+00:00</updated><id>/laptop/dell_xps13_9345</id><content type="html" xml:base="/laptop/dell-xps13-9345"><![CDATA[<h2 id="kernel-command-line">Kernel command line</h2>
+<p>To boot Linux the following kernel parameters need to be provided:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>clk_ignore_unused pd_ignore_unused
+</code></pre></div></div>
+<p>due to a generic resource handover issue.</p>
+
+<h2 id="userspace-dependencies">Userspace dependencies</h2>
+<ul>
+  <li>linux-firmware-20241017</li>
+  <li>Mesa 24.2</li>
+  <li>Windows firmware (in <code class="language-plaintext highlighter-rouge">/lib/firmware/qcom/x1e80100/dell/xps13-9345</code>)
+    <ul>
+      <li>adsp_dtbs.elf</li>
+      <li>adspr.jsn</li>
+      <li>adsps.jsn</li>
+      <li>adspua.jsn</li>
+      <li>battmgr.jsn</li>
+      <li>cdsp_dtbs.elf</li>
+      <li>qcadsp8380.mbn</li>
+      <li>qccdsp8380.mbn</li>
+      <li>qcdxkmsuc8380.mbn</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="uefi-firmware">UEFI firmware</h2>
+<ul>
+  <li>Boot issues with 64 GB version (disable upper 32 GB as workaround)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">cutmem 0x8800000000 0x8fffffffff</code></li>
+    </ul>
+  </li>
+  <li>GRUB fails to start on 64 GB version (<a href="https://git.launchpad.net/~ubuntu-concept/ubuntu/+source/grub2/commit/?id=185e4420f7010c3cdd48ef2274a77f1a4e5e78c1">patch</a> GRUB as workaround)</li>
+</ul>]]></content><author><name>💻 with 🩶</name></author><summary type="html"><![CDATA[Kernel command line To boot Linux the following kernel parameters need to be provided: clk_ignore_unused pd_ignore_unused due to a generic resource handover issue.]]></summary></entry></feed>
