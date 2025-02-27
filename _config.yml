@@ -26,6 +26,7 @@ collections:
     permalink: /:collection/:name
 
 header_pages:
+  - distro_integration.md
   - about.md
 
 titles_from_headings:
