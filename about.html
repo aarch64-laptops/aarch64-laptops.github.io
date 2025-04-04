@@ -32,7 +32,7 @@
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/about.html">About</a></div>
+        <div class="trigger"><a class="page-link" href="/distro_integration.html">Distro Integration</a><a class="page-link" href="/about.html">About</a></div>
       </nav></div>
 </header>
 <main class="page-content" aria-label="Content">
@@ -66,8 +66,13 @@ Try:</p>
 cd aarch64-laptops.github.io
 ./regen.py
 gem install bundler jekyll
+bundle config set --local path 'vendor'
+bundle install
 bundle exec jekyll serve
 </code></pre></div></div>
+
+<p>If on an aarch64 host, you will need to manually edit
+<a href="/Gemfile.lock">Gemfile.lock</a> and adjust the arch suffix on nokogiri before running <code class="language-plaintext highlighter-rouge">bundle install</code>.</p>
 
 <h2 id="copyright-and-licensing">Copyright and licensing</h2>
 

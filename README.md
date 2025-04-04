@@ -22,8 +22,13 @@ git clone https://github.com/aarch64-laptops/aarch64-laptops.github.io
 cd aarch64-laptops.github.io
 ./regen.py
 gem install bundler jekyll
+bundle config set --local path 'vendor'
+bundle install
 bundle exec jekyll serve
 ```
+
+If on an aarch64 host, you will need to manually edit
+[Gemfile.lock](/Gemfile.lock) and adjust the arch suffix on nokogiri before running `bundle install`.
 
 ## Copyright and licensing
 
