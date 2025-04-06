@@ -5,12 +5,12 @@ layout: page
 
 This is a companion guide for distro integrators who want to add support for
 aarch64 (particularly Snapdragon X1) devices to their distro. It assumes that
-you are already familiar with your distros process for building kernels, the
-initramfs and options to override the devicetree selection. It should be used
-in conjunction with your distros documentation.
+you are already familiar with your distro's process for building kernels, the
+initramfs and options to override the devicetree selection. It should be used in
+conjunction with your distro's documentation.
 
 It is recommended that you read through the whole guide before attempting
-bringup and then use it as a reference while you do. This will help you get a
+bring-up and then use it as a reference while you do. This will help you get a
 better understanding of the whole picture and how each part of the process fits
 in.
 
@@ -40,8 +40,8 @@ worth considering as your work to add ARM laptop support to your distro:
 
 ### What is devicetree?
 
-For those unitiated, the devicetree is a descriptive format that is used to
-infom the kernel of what hardware is available and how to communicate with it.
+For those uninitiated, the devicetree is a descriptive format that is used to
+inform the kernel of what hardware is available and how to communicate with it.
 For example, the following snippet describes a `gpio-keys` device, made up of
 volume down and volume up keys which are connected to GPIO's 5 and 6 on the
 `pm8998_gpios` device.
@@ -72,7 +72,8 @@ volume down and volume up keys which are connected to GPIO's 5 and 6 on the
 
 This method of mapping out hardware components and how they refer to each other
 has a long and fairly intriguing history - one that we're really just scratching
-the surface. If you're interested in learning more, check out these resources:
+the surface of. If you're interested in learning more, check out these
+resources:
 
 * [eLinux Devicetree Usage](https://elinux.org/Device_Tree_Usage)
 * [A whole lot of resources about
@@ -122,7 +123,7 @@ welcome.
 
 Where possible, it's recommended that your distro kernel picks up drivers that
 are enabled in defconfig or even derives itself from the defconfig. This will
-ensure that as new devices are enabled upstream they will trickle-down and may
+ensure that as new devices are enabled upstream they will trickle down and may
 become supported in your distro without any intentional effort.
 
 ### Config fragments
@@ -167,7 +168,7 @@ In broad strokes, these are the things to look out for:
    good way to sanity check any changes you made.
 6. For now, put **ALL** kernel modules into the initramfs. This will avoid any
    weird race conditions, missing drivers, or probe failures that aren't retried
-   for whatever reason. We'll wittle this down to just the necessary modules
+   for whatever reason. We'll whittle this down to just the necessary modules
    later on.
 
 ### Actually finding the config options
@@ -179,7 +180,7 @@ what to enable". However there are a few tricks we can use.
 First is to catch the obvious options, look in `arch/arm64/configs/defconfig`
 for all options with `QCOM` or `X1E` in the name, not all of these will be
 needed but those that aren't can be checked later. It's important to note that
-the options with `=y` in the defconfig are rqeuired to be `=y` due to platform
+the options with `=y` in the defconfig are required to be `=y` due to platform
 limitations, without interconnects (for example) it's likely that the platform
 will crash before making it to the initramfs.
 
@@ -275,13 +276,13 @@ There you go, `CONFIG_DRM_PANEL_SAMSUNG_ATNA33XC20` is what we need to enable fo
 
 #### The pesky last few
 
-There's always a few things missing that are a total pain to track down, you can
-check if there's anything in `/sys/kernel/debug/devices_deferred`, though note
-that missing firmware (a likelehood if you aren't on a ThinkPad) will cause some
-drivers not to probe, we'll come back to these later.
+There are always a few things missing that are a total pain to track down, you
+can check if there's anything in `/sys/kernel/debug/devices_deferred`, though
+note that missing firmware (a likelihood if you aren't on a ThinkPad) will cause
+some drivers not to probe, we'll come back to these later.
 
 Don't be afraid to `grep` for compatible strings in the `drivers/` directory of
-the kernel, you can also usually work backwords from a C file, through the
+the kernel, you can also usually work backwards from a C file, through the
 `Makefile` in the same directory and to the associated kernel config option
 which you need.
 
@@ -337,9 +338,8 @@ necessities for full disk encryption!).
 The author of this guide recommends that you make your life as simple as
 possible by doing the following:
 
-1. Install **ALL** kernel modules in the initramfs, especially for
-   initial bringup while you're tracking down all the kernel config
-   options.
+1. Install **ALL** kernel modules in the initramfs, especially for initial
+   bring-up while you're tracking down all the kernel config options.
 2. Once your system is up and running with all the expected
    functionality working, you can use [the script
    here](https://gist.github.com/calebccff/f5e33a25c56c1b2bf32c199bdb76e0de)
@@ -373,10 +373,11 @@ are two of the ways that folks are currently solving this.
 
 ### UKI dtbauto
 
-In systemd v257 it is now possible to build UKIs with multiple DTBs that can be
-picked based on EFI hwids. Refer to the `DeviceTreeAuto=` and `HWIDs=`
-documentation in [ukify(1)](https://man.archlinux.org/man/ukify.1). A list of
-configurations for existing devices can be found in [this
+In systemd v257 it is now possible to build UKIs (Unified Kernel Images) with
+multiple DTBs that can be picked based on EFI hwids. Refer to the
+`DeviceTreeAuto=` and `HWIDs=` documentation in
+[ukify(1)](https://man.archlinux.org/man/ukify.1). A list of configurations for
+existing devices can be found in [this
 repository](https://github.com/anonymix007/systemd-stub/tree/master/json).
 
 The systemd-stub in the UKI image will automatically perform HWID matching and
