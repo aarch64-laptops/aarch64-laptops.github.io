@@ -387,11 +387,10 @@ possible by doing the following:</p>
   <li>Install <strong>ALL</strong> kernel modules in the initramfs, especially for initial
 bring-up while you’re tracking down all the kernel config options.</li>
   <li>Once your system is up and running with all the expected
-functionality working, you can use <a href="https://gist.github.com/calebccff/f5e33a25c56c1b2bf32c199bdb76e0de">the script
-here</a>
+functionality working, you can use <a href="/hwmodules.sh">the hwmodules.sh script in this repository</a>
 to find a list of modules that are loaded AND are specific to your
 hardware. This serves as a good starting point to add to the
-initramfs. The script is also archived <a href="/hwmodules.sh">here</a>.</li>
+initramfs.</li>
 </ol>
 
 <p>It’s worth noting that modules relating to sound (<code class="language-plaintext highlighter-rouge">snd</code>, <code class="language-plaintext highlighter-rouge">q6apm</code>, <code class="language-plaintext highlighter-rouge">lpass</code>)
