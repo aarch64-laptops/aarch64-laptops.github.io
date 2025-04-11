@@ -341,11 +341,10 @@ possible by doing the following:
 1. Install **ALL** kernel modules in the initramfs, especially for initial
    bring-up while you're tracking down all the kernel config options.
 2. Once your system is up and running with all the expected
-   functionality working, you can use [the script
-   here](https://gist.github.com/calebccff/f5e33a25c56c1b2bf32c199bdb76e0de)
+   functionality working, you can use [the hwmodules.sh script in this repository](/hwmodules.sh)
    to find a list of modules that are loaded AND are specific to your
    hardware. This serves as a good starting point to add to the
-   initramfs. The script is also archived [here](/hwmodules.sh).
+   initramfs.
 
 It's worth noting that modules relating to sound (`snd`, `q6apm`, `lpass`)
 and things like `qcom_stats` and `fastrpc` aren't generally required for the
