@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Distro Integration | AArch64 Laptops</title>
+<meta name="generator" content="Jekyll v3.9.4" />
+<meta property="og:title" content="Distro Integration" />
+<meta name="author" content="💻 with 🩶" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Providing the GNU/Linux community with resources for Arm laptops since 2019!" />
+<meta property="og:description" content="Providing the GNU/Linux community with resources for Arm laptops since 2019!" />
+<link rel="canonical" href="/pr-preview/pr-7/distro_integration.html" />
+<meta property="og:url" content="/pr-preview/pr-7/distro_integration.html" />
+<meta property="og:site_name" content="AArch64 Laptops" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Distro Integration" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"💻 with 🩶"},"description":"Providing the GNU/Linux community with resources for Arm laptops since 2019!","headline":"Distro Integration","url":"/pr-preview/pr-7/distro_integration.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/pr-preview/pr-7/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/pr-preview/pr-7/feed.xml" title="AArch64 Laptops" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/pr-preview/pr-7/">AArch64 Laptops</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/pr-preview/pr-7/distro_integration.html">Distro Integration</a><a class="page-link" href="/pr-preview/pr-7/about.html">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Distro Integration</h1>
+  </header>
+
+  <div class="post-content">
+    <p>This is a companion guide for distro integrators who want to add support for
+aarch64 (particularly Snapdragon X1) devices to their distro. It assumes that
+you are already familiar with your distro’s process for building kernels, the
+initramfs and options to override the devicetree selection. It should be used in
+conjunction with your distro’s documentation.</p>
+
+<p>It is recommended that you read through the whole guide before attempting
+bring-up and then use it as a reference while you do. This will help you get a
+better understanding of the whole picture and how each part of the process fits
+in.</p>
+
+<h2 id="background">Background</h2>
+
+<p>Why is it so much harder to get distros up and running on ARM laptops?
+<strong>Especially</strong> considering the (seemingly) good support in the Linux kernel?</p>
+
+<p>This is a complicated question, but largely boils down to a few things which are
+worth considering as your work to add ARM laptop support to your distro:</p>
+
+<ol>
+  <li>Devicetree (the hardware descriptor used instead of ACPI for most ARM
+platforms) is much lower level and does not contain arbitrary logic. Linux
+must be aware of much lower level details of the hardware. Additionally,
+there are still growing pains with devicetree and missing features that make
+it undesirable to separate the devicetree and kernel versions.</li>
+  <li>Historically, ARM has been almost entirely in embedded devices which have
+extremely tight vertical integration. There is a lot of momentum in this
+direction and as a result much of the firmware interfaces, architecture
+designs and software practises lean into this expectation that the
+devicetree, kernel, and userspace will all be tied together tightly. This
+causes a lot of friction for distros.</li>
+  <li>The ACPI provided on Qualcomm Snapdragon laptops is not supported by Linux
+(and likely won’t be for the current gen), but vendors don’t provide
+devicetree firmware instead. There is no definitive answer on where to store
+and how to retrieve the devicetree so that the kernel can consume it.</li>
+</ol>
+
+<h3 id="what-is-devicetree">What is devicetree?</h3>
+
+<p>For those uninitiated, the devicetree is a descriptive format that is used to
+inform the kernel of what hardware is available and how to communicate with it.
+For example, the following snippet describes a <code class="language-plaintext highlighter-rouge">gpio-keys</code> device, made up of
+volume down and volume up keys which are connected to GPIO’s 5 and 6 on the
+<code class="language-plaintext highlighter-rouge">pm8998_gpios</code> device.</p>
+
+<pre><code class="language-dts">/{
+    gpio-keys {
+        compatible = "gpio-keys";
+        label = "Volume keys";
+        autorepeat;
+
+        key-vol-down {
+            label = "Volume down";
+            linux,code = &lt;KEY_VOLUMEDOWN&gt;;
+            gpios = &lt;&amp;pm8998_gpios 5 GPIO_ACTIVE_LOW&gt;;
+            debounce-interval = &lt;15&gt;;
+        };
+
+        key-vol-up {
+            label = "Volume up";
+            linux,code = &lt;KEY_VOLUMEUP&gt;;
+            gpios = &lt;&amp;pm8998_gpios 6 GPIO_ACTIVE_LOW&gt;;
+            debounce-interval = &lt;15&gt;;
+        };
+    };
+}
+</code></pre>
+
+<p>This method of mapping out hardware components and how they refer to each other
+has a long and fairly intriguing history - one that we’re really just scratching
+the surface of. If you’re interested in learning more, check out these
+resources:</p>
+
+<ul>
+  <li><a href="https://elinux.org/Device_Tree_Usage">eLinux Devicetree Usage</a></li>
+  <li><a href="https://elinux.org/Device_Tree_presentations_papers_articles">A whole lot of resources about
+DT</a></li>
+</ul>
+
+<p>The only other significant information to know about devicetrees, is that the
+de-facto source for them is in the kernel itself. While they are meant to be
+forwards AND backwards compatible with the kernel, this is not always the case.
+It’s also common that drivers and associated DT are added at the same time,
+meaning that if you have an old devicetree that predates displayport alt-mode
+support, it’s unlikely that you’ll be able to use the feature even on a newer
+kernel until you update your DT.</p>
+
+<h3 id="drivers">Drivers</h3>
+
+<p>Expanding on the point of devicetree being lower level than ACPI (and ARM
+platforms generally requiring tighter kernel integration); on an ACPI system
+when the kernel wants to power up e.g. a USB controller, it uses the ACPI to do
+it and usually doesn’t need to consider low level details like what power rails
+must be turned on. On devicetree systems, the kernel needs to model all of these
+power rails and control them itself.</p>
+
+<p>Drivers for things like “usb repeaters” (chips which help reduce signal
+degredation across the mainboard) aren’t needed on ACPI - the ACPI itself can
+program these chips or offload it to the embedded controller. On Snapdragon
+laptops this is not usually the case, we need to model the repeater in
+devicetree AND write a driver for it (and wire that driver up to properly
+receive events).</p>
+
+<p>The consequence of all of this is that you need to both enable the USB repeater
+driver in your kernel config and ensure the module is included in your initramfs
+(otherwise you won’t be able to boot from a USB drive).</p>
+
+<p>If you don’t do this correctly, you /should/ get some clear error messages from
+the kernel, and be able to inspect <code class="language-plaintext highlighter-rouge">/sys/kernel/debug/devices_deferred</code> to
+determine what’s missing, however there are many situations where missing
+components like this aren’t so easy to narrow down.</p>
+
+<h2 id="part-1---the-missing-kernel-config">Part 1 - The missing kernel config</h2>
+
+<p>For Snapdragon laptops, the mandate of the upstream kernel developers is to
+ensure that the arm64 defconfig (<code class="language-plaintext highlighter-rouge">arch/arm64/configs/defconfig</code> for those
+following along at home) has everything needed to boot on at least the
+well-supported laptops (like the ThinkPad T14s and X13s). Though patches
+enabling drivers for other laptops (like display panel drivers) would likely be
+welcome.</p>
+
+<p>Where possible, it’s recommended that your distro kernel picks up drivers that
+are enabled in defconfig or even derives itself from the defconfig. This will
+ensure that as new devices are enabled upstream they will trickle down and may
+become supported in your distro without any intentional effort.</p>
+
+<h3 id="config-fragments">Config fragments</h3>
+
+<p>A good approach for e.g. a linux-next kernel variant is to use kernel config
+fragments, this allows you to maintain a list of config options to enable or
+disable on top of the defconfig. An example of this can be seen in the
+<a href="https://gitlab.postmarketos.org/postmarketOS/pmaports/-/tree/082b6f1908db1cf15daacf862e7bfd21d9f2bf57/device/testing/linux-next">postmarketOS linux-next
+package</a>
+which uses a fragment for distro options and another for device options. These
+are simply copied into the kernel config directory and <a href="https://gitlab.postmarketos.org/postmarketOS/pmaports/-/blob/082b6f1908db1cf15daacf862e7bfd21d9f2bf57/device/testing/linux-next/APKBUILD#L36">applied by the kernel
+build system
+here</a>.</p>
+
+<h3 id="device-porting-best-practise">Device porting best practise</h3>
+
+<p>Porting a device to your distro kernel <strong>should</strong> be a relatively
+straightforward process, unfortunately there are a lot of easy mistakes that can
+waste hours of your time. In general if you’re feeling stuck don’t hesitate to
+head over to the <code class="language-plaintext highlighter-rouge">#aarch64-laptops</code> IRC channel over on OFTC.</p>
+
+<p>In broad strokes, these are the things to look out for:</p>
+
+<ol>
+  <li>Pick the LATEST kernel! While support is getting better, Snapdragon laptops
+are getting bug fixes and new features with every single kernel release. If
+your distro offers multiple kernel versions, always use the latest.</li>
+  <li>Ensure your DT is being picked up. For development purposes it is totally
+fine to hardcode this in your GRUB or systemd-boot config (though how exactly
+to do this will depend on your distro).</li>
+  <li>Ensure your DT is the one that came with your kernel. If you made a copy of
+your DT (for example moving it to a generic path so that
+<a href="https://github.com/TravMurav/dtbloader/">dtbloader</a> would see it) and then
+later moved to a newer kernel or made changes to the DT, it can be easy to
+forget and keep using the old one instead.</li>
+  <li>Set <code class="language-plaintext highlighter-rouge">clk_ignore_unused pd_ignore_unused</code> in the kernel cmdline. Since
+schematics are often not available, some clocks and power domains may be
+modelled incorrectly. These options ensure that the resources won’t be turned
+off even if the kernel thinks they’re unused. If you want to experiment with
+them, do so after everything is up and running.</li>
+  <li>If in doubt, <code class="language-plaintext highlighter-rouge">uname -v</code>. Make sure you’re not somehow running an older
+kernel. Checking <code class="language-plaintext highlighter-rouge">zcat /proc/config.gz | grep CONFIG_MY_OPTION</code> is also a
+good way to sanity check any changes you made.</li>
+  <li>For now, put <strong>ALL</strong> kernel modules into the initramfs. This will avoid any
+weird race conditions, missing drivers, or probe failures that aren’t retried
+for whatever reason. We’ll whittle this down to just the necessary modules
+later on.</li>
+</ol>
+
+<h3 id="actually-finding-the-config-options">Actually finding the config options</h3>
+
+<p>While it’s unlikely that kernel config options get renamed, especially for
+device drivers, it’s still difficult to produce a definitive list of “here’s
+what to enable”. However there are a few tricks we can use.</p>
+
+<p>First is to catch the obvious options, look in <code class="language-plaintext highlighter-rouge">arch/arm64/configs/defconfig</code>
+for all options with <code class="language-plaintext highlighter-rouge">QCOM</code> or <code class="language-plaintext highlighter-rouge">X1E</code> in the name, not all of these will be
+needed but those that aren’t can be checked later. It’s important to note that
+the options with <code class="language-plaintext highlighter-rouge">=y</code> in the defconfig are required to be <code class="language-plaintext highlighter-rouge">=y</code> due to platform
+limitations, without interconnects (for example) it’s likely that the platform
+will crash before making it to the initramfs.</p>
+
+<p>With the above exceptions, you should aim to use <code class="language-plaintext highlighter-rouge">=m</code> for most options, with all
+modules in the initramfs this shouldn’t cause any issues.</p>
+
+<p>Just taking these (or applying your distro config options on top of the
+defconfig as mentioned above) should get you a booting kernel.</p>
+
+<p>There is a tool <code class="language-plaintext highlighter-rouge">scripts/dtc/dt_to_config</code> in the kernel sources, this does not
+produce reliable or definitive output, but it can be helpful for point you in
+the right direction and to check that you didn’t miss anything from the
+defconfig.</p>
+
+<p>It can be run like this:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./scripts/dtc/dt_to_config <span class="se">\</span>
+    <span class="nt">--config</span> /path/to/dot-config <span class="se">\</span>
+    <span class="nt">--exclude-flag</span> H,y,m <span class="nt">--include-flag</span> c <span class="se">\</span>
+    <span class="nt">--short-name</span> <span class="se">\</span>
+    <span class="nb">arch</span>/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dts
+</code></pre></div></div>
+
+<p>Where <code class="language-plaintext highlighter-rouge">/path/to/dot-config</code> is the path to a <code class="language-plaintext highlighter-rouge">.config</code> (this will either be
+tracked in your distro packaging or produced as part of the build process).</p>
+
+<p>Running the above will output a list of devicetree nodes, the <code class="language-plaintext highlighter-rouge">compatible</code>
+properties (this is how drivers match against the devicetree) and associated
+driver and kernel config option if known.</p>
+
+<p>For example if you see</p>
+
+<pre><code class="language-txt">-d-c-----n--F : clock-controller@100000 : qcom,x1e80100-gcc : drivers/clk/qcom/gcc-x1e80100.c : CONFIG_CLK_X1E80100_GCC : n
+</code></pre>
+
+<p>This tells you that the <code class="language-plaintext highlighter-rouge">clock-controller@100000</code> node with compatible
+<code class="language-plaintext highlighter-rouge">qcom,x1e80100-gcc</code> matched to driver <code class="language-plaintext highlighter-rouge">gcc-x1e80100.c</code> which is enabled by
+<code class="language-plaintext highlighter-rouge">CONFIG_CLK_X1E80100_GCC</code> which has a current value of <code class="language-plaintext highlighter-rouge">n</code>…</p>
+
+<p><strong>In other words</strong>, <code class="language-plaintext highlighter-rouge">CONFIG_CLK_X1E80100_GCC</code> needs to be enabled.</p>
+
+<p>Please note that some generic nodes will produce incorrect and spurious output.
+This tool should be treated with caution, and its output should be validated
+with a second source of truth - in this case the driver is clearly specific to
+Qualcomm X1E, so it makes sense to enable it. Config options with <code class="language-plaintext highlighter-rouge">MTK</code>
+(Mediatek) or <code class="language-plaintext highlighter-rouge">IMX</code> in the name are probably false matches. If in doubt, ask on
+IRC.</p>
+
+<p>The include/exclude flags are explained in the <code class="language-plaintext highlighter-rouge">--help</code> output of the tool, it’s
+a good idea to spend some time reading this since it is not particularly obvious
+or intuitive (the tool may not have been intended for this usecase). The
+settings in that example should cause the tool to only output options that are
+disabled but should be enabled.</p>
+
+<h4 id="display-panels">Display panels</h4>
+
+<p>Display panels are a special case, they might be picked up by the <code class="language-plaintext highlighter-rouge">dt_to_config</code>
+tool, but just in case, here’s how you find it manually (this process also
+applies to any other driver).</p>
+
+<ol>
+  <li>Open the DTS (devicetree source) file for your device, we’ll take
+<code class="language-plaintext highlighter-rouge">dts/upstream/src/arm64/qcom/x1e80100-lenovo-yoga-slim7x.dts</code> as an example.</li>
+  <li>Search for <code class="language-plaintext highlighter-rouge">panel</code> and look for a node with that name, in this case it looks
+like:
+<!-- Avoid a blank line so the code block below will be part of the list -->
+    <pre><code class="language-dts">&amp;mdss_dp3 {
+ compatible = "qcom,x1e80100-dp";
+ /delete-property/ #sound-dai-cells;
+
+ status = "okay";
+
+ aux-bus {
+     panel {
+         compatible = "samsung,atna45dc02", "samsung,atna33xc20";
+         enable-gpios = &lt;&amp;pmc8380_3_gpios 4 GPIO_ACTIVE_HIGH&gt;;
+         power-supply = &lt;&amp;vreg_edp_3p3&gt;;
+...
+</code></pre>
+    <!-- Continue the numbered list -->
+  </li>
+  <li>Copy the <code class="language-plaintext highlighter-rouge">compatible</code> property strings (if there are multiple then do this
+for both) and grep the drivers directory for them: <code class="language-plaintext highlighter-rouge">grep -rnwI drivers
+-e "samsung,atna45dc02"</code>, you may only get a hit on one of them, this is normal.</li>
+  <li>Open the Makefile in the same directory as the C file that grep points you to (we got <code class="language-plaintext highlighter-rouge">drivers/gpu/drm/panel/panel-samsung-atna33xc20.c:335</code> so open <code class="language-plaintext highlighter-rouge">drivers/gpu/drm/panel/Makefile</code>) and find the reference to the file (it won’t have the <code class="language-plaintext highlighter-rouge">.c</code> suffix).</li>
+</ol>
+
+<div class="language-makefile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">obj-$(CONFIG_DRM_PANEL_SAMSUNG_ATNA33XC20)</span> <span class="o">+=</span> panel-samsung-atna33xc20.o
+</code></pre></div></div>
+
+<p>There you go, <code class="language-plaintext highlighter-rouge">CONFIG_DRM_PANEL_SAMSUNG_ATNA33XC20</code> is what we need to enable for the panel driver in the Yoga Slim 7x.</p>
+
+<h4 id="the-pesky-last-few">The pesky last few</h4>
+
+<p>There are always a few things missing that are a total pain to track down, you
+can check if there’s anything in <code class="language-plaintext highlighter-rouge">/sys/kernel/debug/devices_deferred</code>, though
+note that missing firmware (a likelihood if you aren’t on a ThinkPad) will cause
+some drivers not to probe, we’ll come back to these later.</p>
+
+<p>Don’t be afraid to <code class="language-plaintext highlighter-rouge">grep</code> for compatible strings in the <code class="language-plaintext highlighter-rouge">drivers/</code> directory of
+the kernel, you can also usually work backwards from a C file, through the
+<code class="language-plaintext highlighter-rouge">Makefile</code> in the same directory and to the associated kernel config option
+which you need.</p>
+
+<p>And of course, head over to the IRC where folks can probably help you translate
+your error message or missing functionality into the necessary config options.</p>
+
+<h2 id="part-2---firmware">Part 2 - Firmware</h2>
+
+<p>Many of the benefits of ARM systems come from their heavy use of co-processors
+for hardware-accelerated tasks like audio processing, compute or video decoding (notably things
+that the x86 world has been trying to catch up with in the last few years).</p>
+
+<p>These co-processors all need to run firmware and that firmware is usually
+tied to your specific device. Some of these are packaged in
+<a href="https://web.git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/">linux-firmware</a>
+but for most devices there is no clear license and such packaging isn’t
+possible. Instead the firmware must be pulled from the Windows partition (and
+dual booting is the only way to get firmware updates). The only “correct” way to
+handle this is to have your users dual-boot and to periodically boot back into
+Windows for updates, before then copying over new firmware versions.</p>
+
+<p>For X1E laptops, the
+<a href="https://github.com/CadmiumLinux/woa-firmware-yoinker/blob/main/yoink-firmware">woa-firmware-yoinker</a>
+or
+<a href="https://salsa.debian.org/debian/qcom-firmware-extract">qcom-firmware-extract</a>
+scripts can be used to fetch this firmware for you after installing. The
+process is fairly straightforward and can be applied to other Snapdragon
+laptops too (non-X1E), however it requires disabling BitLocker
+encryption on the Windows partition in order to mount the Windows
+partition from Linux.</p>
+
+<p>The best approach today is probably to come up with a manual or semi-manual
+process that users can follow to extract the firmware from windows and put it in
+the right place during or after the installation.</p>
+
+<p>Solving the current licensing issues of firmware distribution is outside
+the scope of this guide.</p>
+
+<h2 id="part-3---kernel-modules-and-the-initramfs">Part 3 - Kernel modules and the initramfs</h2>
+
+<p>The eternal battle of every device enablement is getting things to work properly
+in the initramfs. This is such a hated process that we have mostly given up and
+just run udevd or even systemd itself in the ramdisk. However one thing we still
+don’t do (most of the time anyway) is pull in all the kernel modules.</p>
+
+<p>On typical x86/ACPI devices, the list of modules required for hardware support
+is usually quite generic and mkinitfs implementations have gained the ability
+to automatically figure out what modules are needed for the device you’re
+booting on. But - as is the running theme here - ARM devices usually require way
+more modules for basic stuff like display output and keyboard input (the bare
+necessities for full disk encryption!).</p>
+
+<p>The author of this guide recommends that you make your life as simple as
+possible by doing the following:</p>
+
+<ol>
+  <li>Install <strong>ALL</strong> kernel modules in the initramfs, especially for initial
+bring-up while you’re tracking down all the kernel config options.</li>
+  <li>Once your system is up and running with all the expected
+functionality working, you can use <a href="/pr-preview/pr-7/hwmodules.sh">the hwmodules.sh script in this repository</a>
+to find a list of modules that are loaded AND are specific to your
+hardware. This serves as a good starting point to add to the
+initramfs.</li>
+</ol>
+
+<p>It’s worth noting that modules relating to sound (<code class="language-plaintext highlighter-rouge">snd</code>, <code class="language-plaintext highlighter-rouge">q6apm</code>, <code class="language-plaintext highlighter-rouge">lpass</code>)
+and things like <code class="language-plaintext highlighter-rouge">qcom_stats</code> and <code class="language-plaintext highlighter-rouge">fastrpc</code> aren’t generally required for the
+functionality you’d expect in the initramfs and can be safely skipped.</p>
+
+<p>Additionally, some modules may not be picked up this way (e.g. those probed via
+auxiliary busses such as <code class="language-plaintext highlighter-rouge">qcom_battmgr</code>). These may not be vital (usually you
+don’t need to know your battery percentage in the initramfs) but it is usually
+still worth looking over <code class="language-plaintext highlighter-rouge">lsmod</code> manually.</p>
+
+<h2 id="part-4---devicetree">Part 4 - Devicetree</h2>
+
+<p>By this point, you should have documented the process for installing firmware on
+your device and come up with a list of kernel config options to enable and
+modules that must be included in the initramfs.</p>
+
+<p>The last step is to correctly pick the devicetree. Since vendors don’t ship
+devicetrees with their devices, we must install the devicetree files into the
+ESP and somehow load the right one based on which device you’re booting on. This
+is especially necessary for the installer, but also generally nice to do on the
+final image too (just in case someone installs to a USB drive!).</p>
+
+<p>This problem is still a massive pain point with no ideal solutions. Listed below
+are two of the ways that folks are currently solving this.</p>
+
+<h3 id="uki-dtbauto">UKI dtbauto</h3>
+
+<p>In systemd v257 it is now possible to build UKIs (Unified Kernel Images) with
+multiple DTBs that can be picked based on EFI hwids. Refer to the
+<code class="language-plaintext highlighter-rouge">DeviceTreeAuto=</code> and <code class="language-plaintext highlighter-rouge">HWIDs=</code> documentation in
+<a href="https://man.archlinux.org/man/ukify.1">ukify(1)</a>. A list of configurations for
+existing devices can be found in <a href="https://github.com/anonymix007/systemd-stub/tree/master/json">this
+repository</a>.</p>
+
+<p>The systemd-stub in the UKI image will automatically perform HWID matching and
+pick the appropriate DTB. The primary benefit to this approach is that it
+enables secureboot by embedding the DTB inside the PE binary (which can be
+signed and validated).</p>
+
+<h3 id="dtbloader">dtbloader</h3>
+
+<p><a href="https://github.com/TravMurav/dtbloader/">dtbloader</a> is an EFI driver that can
+be used in conjunction with systemd-boot, it loads dtbs from a well-known
+directory (<code class="language-plaintext highlighter-rouge">/dtbs/</code> on the ESP and has it’s own internal database of HWIDs). It
+is currently used by the postmarketOS trailblazer generic ARM64 EFI target.</p>
+
+<p>To use it, you must package it in your distro and install it into the ESP as a
+driver for systemd-boot.</p>
+
+<h2 id="part-5---community-buy-in--conclusion">Part 5 - Community buy-in &amp; Conclusion</h2>
+
+<p>There are still a lot of pain points for both distro integrators and end-users
+on these devices. Things like audio and external displays are still not always
+working great (or at all). While there is plenty of work going on in the kernel,
+a lot of effort is still needed in distros and middleware to make these devices
+properly nice to install and use.</p>
+
+<p>Adding support for new distros is one of the best ways to help with this effort.
+Documenting your process (and more generally the state of support for specific
+devices) also goes a long way to spread broader community knowledge and
+awareness.</p>
+
+<p>As we collectively become more familiar with ARM platforms and begin to solve
+some of the more infuriating issues (e.g. more awareness of how they differ to x86,
+what a “devicetree” is) will help us continue bringing the entire stack
+together and making the experience of working with and using Linux on these
+devices better for everyone.</p>
+
+  </div>
+
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/pr-preview/pr-7/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">AArch64 Laptops</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">💻 with 🩶</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/aarch64-laptops"><svg class="svg-icon"><use xlink:href="/pr-preview/pr-7/assets/minima-social-icons.svg#github"></use></svg> <span class="username">aarch64-laptops</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Providing the GNU/Linux community with resources for Arm laptops since 2019!</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
