@@ -46,12 +46,12 @@
   <div class="post-content">
     <p>This is a companion guide for distro integrators who want to add support for
 aarch64 (particularly Snapdragon X1) devices to their distro. It assumes that
-you are already familiar with your distros process for building kernels, the
-initramfs and options to override the devicetree selection. It should be used
-in conjunction with your distros documentation.</p>
+you are already familiar with your distro’s process for building kernels, the
+initramfs and options to override the devicetree selection. It should be used in
+conjunction with your distro’s documentation.</p>
 
 <p>It is recommended that you read through the whole guide before attempting
-bringup and then use it as a reference while you do. This will help you get a
+bring-up and then use it as a reference while you do. This will help you get a
 better understanding of the whole picture and how each part of the process fits
 in.</p>
 
@@ -83,8 +83,8 @@ and how to retrieve the devicetree so that the kernel can consume it.</li>
 
 <h3 id="what-is-devicetree">What is devicetree?</h3>
 
-<p>For those unitiated, the devicetree is a descriptive format that is used to
-infom the kernel of what hardware is available and how to communicate with it.
+<p>For those uninitiated, the devicetree is a descriptive format that is used to
+inform the kernel of what hardware is available and how to communicate with it.
 For example, the following snippet describes a <code class="language-plaintext highlighter-rouge">gpio-keys</code> device, made up of
 volume down and volume up keys which are connected to GPIO’s 5 and 6 on the
 <code class="language-plaintext highlighter-rouge">pm8998_gpios</code> device.</p>
@@ -114,7 +114,8 @@ volume down and volume up keys which are connected to GPIO’s 5 and 6 on the
 
 <p>This method of mapping out hardware components and how they refer to each other
 has a long and fairly intriguing history - one that we’re really just scratching
-the surface. If you’re interested in learning more, check out these resources:</p>
+the surface of. If you’re interested in learning more, check out these
+resources:</p>
 
 <ul>
   <li><a href="https://elinux.org/Device_Tree_Usage">eLinux Devicetree Usage</a></li>
@@ -166,7 +167,7 @@ welcome.</p>
 
 <p>Where possible, it’s recommended that your distro kernel picks up drivers that
 are enabled in defconfig or even derives itself from the defconfig. This will
-ensure that as new devices are enabled upstream they will trickle-down and may
+ensure that as new devices are enabled upstream they will trickle down and may
 become supported in your distro without any intentional effort.</p>
 
 <h3 id="config-fragments">Config fragments</h3>
@@ -212,7 +213,7 @@ kernel. Checking <code class="language-plaintext highlighter-rouge">zcat /proc/c
 good way to sanity check any changes you made.</li>
   <li>For now, put <strong>ALL</strong> kernel modules into the initramfs. This will avoid any
 weird race conditions, missing drivers, or probe failures that aren’t retried
-for whatever reason. We’ll wittle this down to just the necessary modules
+for whatever reason. We’ll whittle this down to just the necessary modules
 later on.</li>
 </ol>
 
@@ -225,7 +226,7 @@ what to enable”. However there are a few tricks we can use.</p>
 <p>First is to catch the obvious options, look in <code class="language-plaintext highlighter-rouge">arch/arm64/configs/defconfig</code>
 for all options with <code class="language-plaintext highlighter-rouge">QCOM</code> or <code class="language-plaintext highlighter-rouge">X1E</code> in the name, not all of these will be
 needed but those that aren’t can be checked later. It’s important to note that
-the options with <code class="language-plaintext highlighter-rouge">=y</code> in the defconfig are rqeuired to be <code class="language-plaintext highlighter-rouge">=y</code> due to platform
+the options with <code class="language-plaintext highlighter-rouge">=y</code> in the defconfig are required to be <code class="language-plaintext highlighter-rouge">=y</code> due to platform
 limitations, without interconnects (for example) it’s likely that the platform
 will crash before making it to the initramfs.</p>
 
@@ -320,13 +321,13 @@ for both) and grep the drivers directory for them: <code class="language-plainte
 
 <h4 id="the-pesky-last-few">The pesky last few</h4>
 
-<p>There’s always a few things missing that are a total pain to track down, you can
-check if there’s anything in <code class="language-plaintext highlighter-rouge">/sys/kernel/debug/devices_deferred</code>, though note
-that missing firmware (a likelehood if you aren’t on a ThinkPad) will cause some
-drivers not to probe, we’ll come back to these later.</p>
+<p>There are always a few things missing that are a total pain to track down, you
+can check if there’s anything in <code class="language-plaintext highlighter-rouge">/sys/kernel/debug/devices_deferred</code>, though
+note that missing firmware (a likelihood if you aren’t on a ThinkPad) will cause
+some drivers not to probe, we’ll come back to these later.</p>
 
 <p>Don’t be afraid to <code class="language-plaintext highlighter-rouge">grep</code> for compatible strings in the <code class="language-plaintext highlighter-rouge">drivers/</code> directory of
-the kernel, you can also usually work backwords from a C file, through the
+the kernel, you can also usually work backwards from a C file, through the
 <code class="language-plaintext highlighter-rouge">Makefile</code> in the same directory and to the associated kernel config option
 which you need.</p>
 
@@ -383,9 +384,8 @@ necessities for full disk encryption!).</p>
 possible by doing the following:</p>
 
 <ol>
-  <li>Install <strong>ALL</strong> kernel modules in the initramfs, especially for
-initial bringup while you’re tracking down all the kernel config
-options.</li>
+  <li>Install <strong>ALL</strong> kernel modules in the initramfs, especially for initial
+bring-up while you’re tracking down all the kernel config options.</li>
   <li>Once your system is up and running with all the expected
 functionality working, you can use <a href="https://gist.github.com/calebccff/f5e33a25c56c1b2bf32c199bdb76e0de">the script
 here</a>
@@ -420,10 +420,11 @@ are two of the ways that folks are currently solving this.</p>
 
 <h3 id="uki-dtbauto">UKI dtbauto</h3>
 
-<p>In systemd v257 it is now possible to build UKIs with multiple DTBs that can be
-picked based on EFI hwids. Refer to the <code class="language-plaintext highlighter-rouge">DeviceTreeAuto=</code> and <code class="language-plaintext highlighter-rouge">HWIDs=</code>
-documentation in <a href="https://man.archlinux.org/man/ukify.1">ukify(1)</a>. A list of
-configurations for existing devices can be found in <a href="https://github.com/anonymix007/systemd-stub/tree/master/json">this
+<p>In systemd v257 it is now possible to build UKIs (Unified Kernel Images) with
+multiple DTBs that can be picked based on EFI hwids. Refer to the
+<code class="language-plaintext highlighter-rouge">DeviceTreeAuto=</code> and <code class="language-plaintext highlighter-rouge">HWIDs=</code> documentation in
+<a href="https://man.archlinux.org/man/ukify.1">ukify(1)</a>. A list of configurations for
+existing devices can be found in <a href="https://github.com/anonymix007/systemd-stub/tree/master/json">this
 repository</a>.</p>
 
 <p>The systemd-stub in the UKI image will automatically perform HWID matching and
